@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EngineBuilder));
             this.cmbLayout = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtEngineName = new System.Windows.Forms.TextBox();
@@ -45,6 +46,13 @@
             this.txtAngle = new System.Windows.Forms.TextBox();
             this.txtRPM = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.lblGenerated = new System.Windows.Forms.Label();
+            this.txtOrder = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtChamberVolume = new System.Windows.Forms.TextBox();
+            this.txtRod = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cmbLayout
@@ -146,7 +154,7 @@
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(5, 214);
+            this.btnCreate.Location = new System.Drawing.Point(5, 291);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(227, 23);
             this.btnCreate.TabIndex = 3;
@@ -208,11 +216,70 @@
             this.label8.TabIndex = 1;
             this.label8.Text = "RPM";
             // 
+            // lblGenerated
+            // 
+            this.lblGenerated.AutoSize = true;
+            this.lblGenerated.Location = new System.Drawing.Point(12, 275);
+            this.lblGenerated.Name = "lblGenerated";
+            this.lblGenerated.Size = new System.Drawing.Size(0, 13);
+            this.lblGenerated.TabIndex = 1;
+            // 
+            // txtOrder
+            // 
+            this.txtOrder.Location = new System.Drawing.Point(15, 185);
+            this.txtOrder.Multiline = true;
+            this.txtOrder.Name = "txtOrder";
+            this.txtOrder.Size = new System.Drawing.Size(197, 20);
+            this.txtOrder.TabIndex = 2;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 169);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(33, 13);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Order";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 217);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(67, 13);
+            this.label10.TabIndex = 1;
+            this.label10.Text = "Chamber Vol";
+            // 
+            // txtChamberVolume
+            // 
+            this.txtChamberVolume.Location = new System.Drawing.Point(15, 233);
+            this.txtChamberVolume.Multiline = true;
+            this.txtChamberVolume.Name = "txtChamberVolume";
+            this.txtChamberVolume.Size = new System.Drawing.Size(64, 20);
+            this.txtChamberVolume.TabIndex = 2;
+            // 
+            // txtRod
+            // 
+            this.txtRod.Location = new System.Drawing.Point(85, 233);
+            this.txtRod.Multiline = true;
+            this.txtRod.Name = "txtRod";
+            this.txtRod.Size = new System.Drawing.Size(64, 20);
+            this.txtRod.TabIndex = 2;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(82, 217);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(63, 13);
+            this.label11.TabIndex = 1;
+            this.label11.Text = "Rod Length";
+            // 
             // EngineBuilder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(240, 249);
+            this.ClientSize = new System.Drawing.Size(240, 326);
             this.Controls.Add(this.btnCreate);
             this.Controls.Add(this.txtAngle);
             this.Controls.Add(this.txtCylinders);
@@ -220,16 +287,24 @@
             this.Controls.Add(this.txtRPM);
             this.Controls.Add(this.txtBore);
             this.Controls.Add(this.txtStroke);
+            this.Controls.Add(this.txtRod);
+            this.Controls.Add(this.txtChamberVolume);
+            this.Controls.Add(this.txtOrder);
             this.Controls.Add(this.txtEngineName);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label8);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.lblGenerated);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbLayout);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EngineBuilder";
             this.Text = "Engine Builder";
             this.Load += new System.EventHandler(this.EngineBuilder_Load);
@@ -257,6 +332,13 @@
         private System.Windows.Forms.TextBox txtAngle;
         private System.Windows.Forms.TextBox txtRPM;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblGenerated;
+        private System.Windows.Forms.TextBox txtOrder;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtChamberVolume;
+        private System.Windows.Forms.TextBox txtRod;
+        private System.Windows.Forms.Label label11;
     }
 }
 
