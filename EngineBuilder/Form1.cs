@@ -18,16 +18,16 @@ namespace EngineBuilder
     {
         private void EngineBuilder_Load(object sender, EventArgs e)
         {
-           
-           
+
+
         }
         public EngineBuilder()
         {
-           
+
             InitializeComponent();
         }
 
-     
+
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -36,7 +36,7 @@ namespace EngineBuilder
 
         private void txtCapacity_TextChanged(object sender, EventArgs e)
         {
-         
+
         }
 
         private void txtBore_TextChanged(object sender, EventArgs e)
@@ -46,20 +46,20 @@ namespace EngineBuilder
 
         }
 
-        private void txtStroke_TextChanged(object sender, EventArgs e )
+        private void txtStroke_TextChanged(object sender, EventArgs e)
         {
 
-           
+
             CalculateCapacity();
         }
 
-       
+
         private void txtCylinders_TextChanged(object sender, EventArgs e)
         {
-           
+
             CalculateCapacity();
         }
-         void CalculateCapacity()
+        void CalculateCapacity()
         {
             lblGenerated.Text = "";
             if (txtBore.Text != "" && txtStroke.Text != "" && txtCylinders.Text != "")
@@ -70,7 +70,7 @@ namespace EngineBuilder
                 int cylinders = Convert.ToInt32(txtCylinders.Text);
                 double capacity = 0.7854 * (bore / 10) * (bore / 10) * (stroke / 10) * cylinders;
                 txtCapacity.Text = Convert.ToString(Math.Round(capacity));
-                
+
 
             }
         }
@@ -78,7 +78,7 @@ namespace EngineBuilder
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-           
+
             double bore = Convert.ToDouble(txtBore.Text);
             double stroke = Convert.ToDouble(txtStroke.Text);
             int cylinders = Convert.ToInt32(txtCylinders.Text);
@@ -86,18 +86,18 @@ namespace EngineBuilder
             int angle = Convert.ToInt32(txtAngle.Text);
             int cmb = cmbLayout.SelectedIndex;
             int bank = 0;
-            
-           
-                string input = txtOrder.Text;
-                string[] stringValues = input.Split(' ');
-                int[] order = new int[stringValues.Length];
 
-                for (int i = 0; i < stringValues.Length; i++)
-                {
-                    order[i] = int.Parse(stringValues[i]);
-                }
-            
-            
+
+            string input = txtOrder.Text;
+            string[] stringValues = input.Split(' ');
+            int[] order = new int[stringValues.Length];
+
+            for (int i = 0; i < stringValues.Length; i++)
+            {
+                order[i] = int.Parse(stringValues[i]);
+            }
+
+
             if (cmbLayout.SelectedIndex == 0)
             {
                 bank = 1;
@@ -150,17 +150,17 @@ namespace EngineBuilder
             int tempo = -1;
             for (int j = 0; j < bank; j++)
             {
-              
-                
+
+
                 {
                     for (int i = 0; i < cpb; i++)
                     {
                         tempo++;
                         sw.WriteLine();
-                        sw.Write(".connect_wire(wires.wire" + (order[tempo]) + ", (" + (i+1) + ".0 / " + (cpb) + ".0) + (" + j + ".0 / " + cylinders +".0) * cycle)");
-                        
+                        sw.Write(".connect_wire(wires.wire" + (order[tempo]) + ", (" + (i + 1) + ".0 / " + (cpb) + ".0) + (" + j + ".0 / " + cylinders + ".0) * cycle)");
+
                     }
-                   
+
                 }
             }
             sw.WriteLine(";");
@@ -202,18 +202,18 @@ namespace EngineBuilder
             {
                 //exhaust
                 sw.WriteLine("_exhaust_cam_" + i);
-                
-                for (int j = -1; j < cpb-1; j++)
+
+                for (int j = -1; j < cpb - 1; j++)
                 {
-                    sw.WriteLine(".add_lobe(((rot360 - exhaust_lobe_center) + " + (j+1) + " * rot) + " + (angle * i) + " * units.deg)");
+                    sw.WriteLine(".add_lobe(((rot360 - exhaust_lobe_center) + " + (j + 1) + " * rot) + " + (angle * i) + " * units.deg)");
                 }
                 //intake
                 sw.WriteLine("");
                 sw.WriteLine("_intake_cam_" + i);
-                
+
                 for (int j = -1; j < cpb - 1; j++)
                 {
-                    sw.WriteLine(".add_lobe(((rot360 - intake_lobe_center) + " + (j+1) + " * rot) + " + (angle * i) + " * units.deg)");
+                    sw.WriteLine(".add_lobe(((rot360 - intake_lobe_center) + " + (j + 1) + " * rot) + " + (angle * i) + " * units.deg)");
                 }
                 sw.WriteLine("");
             }
@@ -233,7 +233,7 @@ namespace EngineBuilder
             sw.WriteLine("input exhaust_camshaft;");
             sw.WriteLine("input chamber_volume: " + txtChamberVolume.Text + ".0 * units.cc;");
             sw.WriteLine("input intake_runner_volume: " + txtChamberVolume.Text + ".0 * units.cc;");
-            sw.WriteLine("input intake_runner_cross_section_area: " + Math.Round(Convert.ToDouble(txtChamberVolume.Text) / (bore/10)) + ".0 * units.cm2;");
+            sw.WriteLine("input intake_runner_cross_section_area: " + Math.Round(Convert.ToDouble(txtChamberVolume.Text) / (bore / 10)) + ".0 * units.cm2;");
             sw.WriteLine("input exhaust_runner_volume: " + txtChamberVolume.Text + ".0 * units.cc;");
             sw.WriteLine("input exhaust_runner_cross_section_area: " + Math.Round(Convert.ToDouble(txtChamberVolume.Text) / (bore / 10)) + ".0 * units.cm2;");
             sw.WriteLine();
@@ -244,10 +244,10 @@ namespace EngineBuilder
             sw.WriteLine();
             sw.WriteLine("function intake_flow(50 * units.thou)");
             sw.WriteLine("intake_flow");
-            for (int i = 0; i < (rpm/500); i++)
+            for (int i = 0; i < (rpm / 500); i++)
             {
-                sw.WriteLine(".add_flow_sample(" + (i*50) + " * lift_scale, " + (i*25) + " * flow_attenuation)" );
-                
+                sw.WriteLine(".add_flow_sample(" + (i * 50) + " * lift_scale, " + (i * 25) + " * flow_attenuation)");
+
             }
             sw.WriteLine();
             sw.WriteLine("function exhaust_flow(50 * units.thou)");
@@ -255,7 +255,7 @@ namespace EngineBuilder
             for (int i = 0; i < (rpm / 500); i++)
             {
                 sw.WriteLine(".add_flow_sample(" + (i * 50) + " * lift_scale, " + (i * 25) + " * flow_attenuation)");
-               
+
             }
             sw.WriteLine();
             sw.WriteLine("cylinder_head head(");
@@ -275,7 +275,7 @@ namespace EngineBuilder
             sw.WriteLine();
             sw.WriteLine("engine engine(");
             sw.WriteLine("name: \"" + txtEngineName.Text + "\",");
-            sw.WriteLine("starter_torque: " + (Convert.ToDouble(txtCapacity.Text)/10) + " * units.lb_ft,");
+            sw.WriteLine("starter_torque: " + (Convert.ToDouble(txtCapacity.Text) / 10) + " * units.lb_ft,");
             sw.WriteLine("redline: " + rpm + " * units.rpm,");
             sw.WriteLine("simulation_frequency: " + rpm + ",");
             sw.WriteLine("fuel: fuel(");
@@ -335,7 +335,7 @@ namespace EngineBuilder
             sw.WriteLine(")");
             sw.WriteLine();
 
-           
+
             sw.WriteLine("intake intake(");
             sw.WriteLine("plenum_volume: 1.0 * units.L,");
             sw.WriteLine("plenum_cross_section_area: 10.0 * units.cm2,");
@@ -359,7 +359,7 @@ namespace EngineBuilder
             sw.WriteLine();
             for (int i = 0; i < bank; i++)
             {
-                sw.WriteLine("    cylinder_bank b" + i + "(bank_params, angle: " + (angle*(i-1)) +"  * units.deg)");
+                sw.WriteLine("    cylinder_bank b" + i + "(bank_params, angle: " + (angle * (i - 1)) + "  * units.deg)");
             }
             tempo = -1;
             for (int i = 0; i < bank; i++)
@@ -371,7 +371,7 @@ namespace EngineBuilder
                     sw.WriteLine(".add_cylinder(");
                     sw.WriteLine(" piston: piston(piston_params, blowby: k_28inH2O(0.0)),");
                     sw.WriteLine(" connecting_rod: connecting_rod(cr_params),");
-                    sw.WriteLine("rod_journal: rj" + j + "," );
+                    sw.WriteLine("rod_journal: rj" + j + ",");
                     sw.WriteLine("intake: intake,");
                     sw.WriteLine("exhaust_system: exhaust" + i + ",");
                     sw.WriteLine("ignition_wire: wires.wire" + (order[tempo]));
@@ -400,13 +400,13 @@ namespace EngineBuilder
             sw.WriteLine(")");
 
             sw.WriteLine();
-            sw.WriteLine(txtEngineName.Text+ "_camshaft_builder camshaft(intake_lobe, exhaust_lobe)");
+            sw.WriteLine(txtEngineName.Text + "_camshaft_builder camshaft(intake_lobe, exhaust_lobe)");
             sw.WriteLine();
             for (int i = 0; i < bank; i++)
             {
-                sw.WriteLine("b" + i +".set_cylinder_head (");
+                sw.WriteLine("b" + i + ".set_cylinder_head (");
                 sw.WriteLine(txtEngineName.Text + "_cylinder_head(");
-                sw.WriteLine("chamber_volume: " + (Convert.ToDouble(txtCapacity.Text) / 2000) + " * 25 * units.cc," );
+                sw.WriteLine("chamber_volume: " + (Convert.ToDouble(txtCapacity.Text) / 2000) + " * 25 * units.cc,");
                 sw.WriteLine("intake_camshaft: camshaft.intake_cam_" + i + ",");
                 sw.WriteLine("exhaust_camshaft: camshaft.exhaust_cam_" + i + "");
                 sw.WriteLine(")");
@@ -414,9 +414,9 @@ namespace EngineBuilder
             }
             sw.WriteLine("function timing_curve(1000 * units.rpm)");
             sw.WriteLine("timing_curve");
-            for (int i = 0; i < (rpm/1000); i++)
+            for (int i = 0; i < (rpm / 1000); i++)
             {
-                sw.WriteLine(".add_sample(" + i + "000 * units.rpm, " + (7*i) + " * units.deg)");
+                sw.WriteLine(".add_sample(" + i + "000 * units.rpm, " + (7 * i) + " * units.deg)");
             }
             sw.WriteLine("engine.add_ignition_module(");
             sw.WriteLine(txtEngineName.Text + "_ignition(");
@@ -426,13 +426,13 @@ namespace EngineBuilder
             sw.WriteLine(")");
             sw.WriteLine(")");
             sw.WriteLine("}");
-            sw.WriteLine("label car_mass(1500 * units.kg)\r\n\r\nprivate node generic_racecar {\r\n    alias output __out:\r\n        vehicle(\r\n            mass: car_mass,\r\n            drag_coefficient: 0.5,\r\n            cross_sectional_area: (72 * units.inch) * (32 * units.inch),\r\n            diff_ratio: 3.9,\r\n            tire_radius: 16 * units.inch,\r\n            rolling_resistance: 0.015 * car_mass * 9.81,\r\n            stiffness: 50 * units.lb_ft / units.deg,\r\n            damping: 15.0,\r\n            max_flex: 5 * units.deg,\r\n            limit_flex: true,\r\n            simulate_flex: true\r\n        );\r\n}\r\n\r\nprivate node racecar_transmission {\r\n    alias output __out:\r\n        transmission(\r\n            max_clutch_torque: 700 * units.lb_ft,\r\n            max_clutch_flex: 5 * units.deg,\r\n            limit_clutch_flex: true,\r\n            clutch_stiffness: 50 * units.lb_ft / units.deg,\r\n            clutch_damping: 2.0,\r\n            simulate_flex: true\r\n        )\r\n        .add_gear(3.140)\r\n        .add_gear(2.308)\r\n        .add_gear(1.75)\r\n        .add_gear(1.5)\r\n        .add_gear(1.2);\r\n}\r\n\r\npublic node main {\r\n    set_engine(" + txtEngineName.Text +"())\r\n    set_vehicle(generic_racecar())\r\n    set_transmission(racecar_transmission())\r\n}\r\n\r\nmain()\r\n");
+            sw.WriteLine("label car_mass(1500 * units.kg)\r\n\r\nprivate node generic_racecar {\r\n    alias output __out:\r\n        vehicle(\r\n            mass: car_mass,\r\n            drag_coefficient: 0.5,\r\n            cross_sectional_area: (72 * units.inch) * (32 * units.inch),\r\n            diff_ratio: 3.9,\r\n            tire_radius: 16 * units.inch,\r\n            rolling_resistance: 0.015 * car_mass * 9.81,\r\n            stiffness: 50 * units.lb_ft / units.deg,\r\n            damping: 15.0,\r\n            max_flex: 5 * units.deg,\r\n            limit_flex: true,\r\n            simulate_flex: true\r\n        );\r\n}\r\n\r\nprivate node racecar_transmission {\r\n    alias output __out:\r\n        transmission(\r\n            max_clutch_torque: 700 * units.lb_ft,\r\n            max_clutch_flex: 5 * units.deg,\r\n            limit_clutch_flex: true,\r\n            clutch_stiffness: 50 * units.lb_ft / units.deg,\r\n            clutch_damping: 2.0,\r\n            simulate_flex: true\r\n        )\r\n        .add_gear(3.140)\r\n        .add_gear(2.308)\r\n        .add_gear(1.75)\r\n        .add_gear(1.5)\r\n        .add_gear(1.2);\r\n}\r\n\r\npublic node main {\r\n    set_engine(" + txtEngineName.Text + "())\r\n    set_vehicle(generic_racecar())\r\n    set_transmission(racecar_transmission())\r\n}\r\n\r\nmain()\r\n");
 
             sw.Close();
             lblGenerated.Text = "Engine Generated";
-            
 
-            
+
+
         }
     }
 }
