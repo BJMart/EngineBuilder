@@ -171,7 +171,7 @@ namespace EngineBuilder
             sw.WriteLine("input intake_lobe_profile;");
             sw.WriteLine("input exhaust_lobe_profile;");
             sw.WriteLine("input lobe_seperation: 110 * units.deg;");
-            sw.WriteLine("input intake_lobe_center; lobe_seperation;");
+            sw.WriteLine("input intake_lobe_center: lobe_seperation;");
             sw.WriteLine("input exhaust_lobe_center: lobe_seperation;"); ;
             sw.WriteLine("input advance: 0.0 * units.deg;");
             sw.WriteLine("input base_radius: 0.75 * units.inch;");
@@ -179,8 +179,8 @@ namespace EngineBuilder
 
             for (int i = 0; i < bank; i++)
             {
-                sw.WriteLine("output intake_cam_" + i + ": _intake_cam_" + i);
-                sw.WriteLine("output exhaust_cam_" + i + ": _exhaust_cam_" + i);
+                sw.WriteLine("output intake_cam_" + i + ": _intake_cam_" + i + ";");
+                sw.WriteLine("output exhaust_cam_" + i + ": _exhaust_cam_" + i + ";");
             }
             sw.WriteLine("camshaft_parameters params(");
             sw.WriteLine("advance: advance,");
@@ -233,9 +233,9 @@ namespace EngineBuilder
             sw.WriteLine("input exhaust_camshaft;");
             sw.WriteLine("input chamber_volume: " + txtChamberVolume.Text + ".0 * units.cc;");
             sw.WriteLine("input intake_runner_volume: " + txtChamberVolume.Text + ".0 * units.cc;");
-            sw.WriteLine("input intake_runner_cross_section_area: " + (Convert.ToDouble(txtChamberVolume.Text) / (bore/10)) + ".0 * units.cm2;");
+            sw.WriteLine("input intake_runner_cross_section_area: " + Math.Round(Convert.ToDouble(txtChamberVolume.Text) / (bore/10)) + ".0 * units.cm2;");
             sw.WriteLine("input exhaust_runner_volume: " + txtChamberVolume.Text + ".0 * units.cc;");
-            sw.WriteLine("input exhaust_runner_cross_section_area: " + (Convert.ToDouble(txtChamberVolume.Text) / (bore / 10)) + ".0 * units.cm2;");
+            sw.WriteLine("input exhaust_runner_cross_section_area: " + Math.Round(Convert.ToDouble(txtChamberVolume.Text) / (bore / 10)) + ".0 * units.cm2;");
             sw.WriteLine();
             sw.WriteLine("input flow_attenuation: 1.0;");
             sw.WriteLine("input lift_scale: 0.92;");
@@ -286,15 +286,15 @@ namespace EngineBuilder
             sw.WriteLine();
             sw.WriteLine("label stroke(" + stroke + " * units.mm)");
             sw.WriteLine("label bore(" + bore + " * units.mm)");
-            sw.WriteLine("label rod_length(" + txtRod.Text + " * units.mm");
+            sw.WriteLine("label rod_length(" + txtRod.Text + " * units.mm)");
             sw.WriteLine("label compression_height(1.0 * units.inch)");
             sw.WriteLine();
-            sw.WriteLine(")");
+            sw.WriteLine();
             sw.WriteLine();
             sw.WriteLine("crankshaft c0(");
             sw.WriteLine("throw: " + stroke + " / 2,");
-            sw.WriteLine("flywheel_mass: " + ((Convert.ToDouble(txtCapacity.Text) / 200)) + " * units.kg");
-            sw.WriteLine("mass: " + ((Convert.ToDouble(txtCapacity.Text) / 500)) + " * units.kg");
+            sw.WriteLine("flywheel_mass: " + ((Convert.ToDouble(txtCapacity.Text) / 200)) + " * units.kg,");
+            sw.WriteLine("mass: " + ((Convert.ToDouble(txtCapacity.Text) / 500)) + " * units.kg,");
             sw.WriteLine("friction_torque: 5.0 * units.lb_ft,");
             sw.WriteLine("moment_of_inertia: 0.22986844776863666 * 0.2,");
             sw.WriteLine("position_x: 0 * units.inch,");
@@ -305,7 +305,7 @@ namespace EngineBuilder
 
             for (int i = 0; i < cpb; i++)
             {
-                sw.WriteLine("rod_journal rj" + i + "(angle: " + i + ".0/ " + cylinders + ".0) *360 * units.deg)");
+                sw.WriteLine("rod_journal rj" + i + "(angle: (" + i + ".0/ " + cylinders + ".0) *360 * units.deg)");
             }
             sw.WriteLine();
             sw.WriteLine("c0");
@@ -321,10 +321,10 @@ namespace EngineBuilder
             sw.WriteLine(")");
             sw.WriteLine();
             sw.WriteLine("piston_parameters piston_params(");
-            sw.WriteLine("mass: 50 * units.g");
+            sw.WriteLine("mass: 50 * units.g,");
             sw.WriteLine("compression_height: compression_height,");
-            sw.WriteLine("wrist_pin_position: 0 * units.mm");
-            sw.WriteLine("displacement: 0.0");
+            sw.WriteLine("wrist_pin_position: 0 * units.mm,");
+            sw.WriteLine("displacement: " + txtCapacity.Text);
             sw.WriteLine(")");
             sw.WriteLine();
             sw.WriteLine("connecting_rod_parameters cr_params(");
@@ -344,7 +344,7 @@ namespace EngineBuilder
             sw.WriteLine("idle_throttle_plate_position: 0.991");
             sw.WriteLine(")");
             sw.WriteLine();
-            sw.WriteLine("exhaust_system_prameters es_params(");
+            sw.WriteLine("exhaust_system_parameters es_params(");
             sw.WriteLine("outlet_flow_rate: k_carb(1000.0),");
             sw.WriteLine("primary_tube_length: 10.0 * units.inch,");
             sw.WriteLine("primary_flow_rate: k_carb(200.0),");
@@ -386,14 +386,14 @@ namespace EngineBuilder
             }
             sw.WriteLine();
             sw.WriteLine("harmonic_cam_lobe intake_lobe(");
-            sw.WriteLine("duation_at_50_thou: 225 * units.deg,");
+            sw.WriteLine("  duration_at_50_thou: 225 * units.deg,");
             sw.WriteLine("gamma: 1,");
             sw.WriteLine("lift: 12.78 * units.mm,");
             sw.WriteLine("steps: 100");
             sw.WriteLine(")");
             sw.WriteLine();
             sw.WriteLine("harmonic_cam_lobe exhaust_lobe(");
-            sw.WriteLine("duation_at_50_thou: 230 * units.deg,");
+            sw.WriteLine("  duration_at_50_thou: 230 * units.deg,");
             sw.WriteLine("gamma: 1,");
             sw.WriteLine("lift: 12.78 * units.mm,");
             sw.WriteLine("steps: 100");
@@ -406,7 +406,7 @@ namespace EngineBuilder
             {
                 sw.WriteLine("b" + i +".set_cylinder_head (");
                 sw.WriteLine(txtEngineName.Text + "_cylinder_head(");
-                sw.WriteLine("chamber_volume: " + (Convert.ToDouble(txtCapacity.Text) / 2000) + " * 25 units.cc;" );
+                sw.WriteLine("chamber_volume: " + (Convert.ToDouble(txtCapacity.Text) / 2000) + " * 25 * units.cc," );
                 sw.WriteLine("intake_camshaft: camshaft.intake_cam_" + i + ",");
                 sw.WriteLine("exhaust_camshaft: camshaft.exhaust_cam_" + i + "");
                 sw.WriteLine(")");
