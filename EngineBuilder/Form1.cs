@@ -213,7 +213,7 @@ namespace EngineBuilder
 
                 for (int j = -1; j < cpb - 1; j++)
                 {
-                    sw.WriteLine(".add_lobe(((rot360 - intake_lobe_center) + " + (j + 1) + " * rot) + " + (angle * i) + " * units.deg)");
+                    sw.WriteLine(".add_lobe(((rot360 + intake_lobe_center) + " + (j + 1) + " * rot) + " + (angle * i) + " * units.deg)");
                 }
                 sw.WriteLine("");
             }
