@@ -287,20 +287,15 @@ namespace EngineBuilder
             sw.WriteLine("label stroke(" + stroke + " * units.mm)");
             sw.WriteLine("label bore(" + bore + " * units.mm)");
             sw.WriteLine("label rod_length(" + txtRod.Text + " * units.mm)");
+            sw.WriteLine("  label rod_mass(50 * units.g)");
             sw.WriteLine("label compression_height(1.0 * units.inch)");
+            sw.WriteLine(" label crank_mass(20 * units.lb)");
+            sw.WriteLine(" label flywheel_mass(10 * units.lb)");
+            sw.WriteLine("   label flywheel_radius(5 * units.inch)");
+            sw.WriteLine(" label crank_moment(\r\n        disk_moment_of_inertia(mass: crank_mass, radius: stroke)\r\n    )\r\n    label flywheel_moment(\r\n        disk_moment_of_inertia(mass: flywheel_mass, radius: flywheel_radius)\r\n    )\r\n    label other_moment( // Moment from cams, pulleys, etc [estimated]\r\n        disk_moment_of_inertia(mass: 1 * units.kg, radius: 1.0 * units.cm)\r\n    )");
             sw.WriteLine();
-            sw.WriteLine();
-            sw.WriteLine();
-            sw.WriteLine("crankshaft c0(");
-            sw.WriteLine("throw: " + stroke + " / 2,");
-            sw.WriteLine("flywheel_mass: " + ((Convert.ToDouble(txtCapacity.Text) / 200)) + " * units.kg,");
-            sw.WriteLine("mass: " + ((Convert.ToDouble(txtCapacity.Text) / 500)) + " * units.kg,");
-            sw.WriteLine("friction_torque: 5.0 * units.lb_ft,");
-            sw.WriteLine("moment_of_inertia: 0.22986844776863666 * 0.2,");
-            sw.WriteLine("position_x: 0 * units.inch,");
-            sw.WriteLine("position_y: 0.0,");
-            sw.WriteLine("tdc: 90 * units.deg");
-            sw.WriteLine(")");
+            sw.WriteLine("  crankshaft c0(\r\n        throw: stroke / 2,\r\n        flywheel_mass: flywheel_mass,\r\n        mass: crank_mass,\r\n        friction_torque: 1.0 * units.lb_ft,\r\n        moment_of_inertia:\r\n            crank_moment + flywheel_moment + other_moment,\r\n        position_x: 0.0,\r\n        position_y: 0.0,\r\n        tdc: (90 + (75 / 2.0)) * units.deg\r\n    )\r\n");
+         
             sw.WriteLine();
 
             for (int i = 0; i < cpb; i++)
@@ -315,25 +310,18 @@ namespace EngineBuilder
             }
             sw.WriteLine("engine.add_crankshaft(c0)");
             sw.WriteLine();
-            sw.WriteLine("cylinder_bank_parameters bank_params(");
-            sw.WriteLine("bore: bore * units.mm,");
-            sw.WriteLine("deck_height: stroke / 2 + rod_length + compression_height");
-            sw.WriteLine(")");
+            sw.WriteLine("cylinder_bank_parameters bank_params(\r\n        bore: bore,\r\n        deck_height: stroke / 2 + rod_length + compression_height\r\n    )");
+          
             sw.WriteLine();
             sw.WriteLine("piston_parameters piston_params(");
             sw.WriteLine("mass: 50 * units.g,");
             sw.WriteLine("compression_height: compression_height,");
             sw.WriteLine("wrist_pin_position: 0 * units.mm,");
-            sw.WriteLine("displacement: " + txtCapacity.Text);
+            sw.WriteLine("displacement: 0.0");
             sw.WriteLine(")");
             sw.WriteLine();
-            sw.WriteLine("connecting_rod_parameters cr_params(");
-            sw.WriteLine("mass: 25.0 * units.g,");
-            sw.WriteLine("moment_of_inertia: 0.001,");
-            sw.WriteLine("center_of_mass: 0.0,");
-            sw.WriteLine("length: rod_length");
-            sw.WriteLine(")");
-            sw.WriteLine();
+            sw.WriteLine("  connecting_rod_parameters cr_params(\r\n        mass: rod_mass,\r\n        moment_of_inertia: rod_moment_of_inertia(\r\n            mass: rod_mass,\r\n            length: rod_length\r\n        ),\r\n        center_of_mass: 0.0,\r\n        length: rod_length\r\n    )");
+          
 
 
             sw.WriteLine("intake intake(");
